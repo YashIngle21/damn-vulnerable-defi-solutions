@@ -15,6 +15,7 @@ struct Distribution {
     mapping(address claimer => mapping(uint256 word => uint256 bits)) claims;
 }
 
+
 struct Claim {
     uint256 batchNumber;
     uint256 amount;
@@ -60,7 +61,7 @@ contract TheRewarderDistributor {
         distributions[token].remaining = amount;
 
         uint256 batchNumber = distributions[token].nextBatchNumber;
-        distributions[token].roots[batchNumber] = newRoot;
+        distributions[token].roots[batchNumber] = newRoot;                 
         distributions[token].nextBatchNumber++;
 
         SafeTransferLib.safeTransferFrom(address(token), msg.sender, address(this), amount);
